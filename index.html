@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LÁJAR ASOCIADOS</title>
+  <meta name="description" content="LÁJAR ASOCIADOS: un equipo de Málaga y su proyecto DJHero.">
+
+  <!-- Tipografías (si no cargan, se usan las de sistema) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sedgwick+Ave+Display&family=Archivo:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <script>document.documentElement.classList.add("js");</script>
+  <style>
+    /* ==========================================================
+       COLORES Y TIPOGRAFÍA (cámbialos aquí, en un solo sitio)
+       ========================================================== */
+    :root {
+      --wall:      #211640;   /* pared: violeta noche */
+      --wall-2:    #2C1D5C;   /* pared de la segunda sección */
+      --ink:       #140D28;   /* casi negro violáceo (marcos, cabecera) */
+      --paper:     #F4EEE2;   /* papel / texto claro */
+      --paper-dim: #C9C0D8;   /* texto secundario */
+      --pink:      #49a2dd;   /* spray rosa */
+      --cyan:      #35E0D0;   /* spray turquesa */
+      --yellow:    #f5ff34;   /* spray amarillo */
+
+      --font-tag:  "Sedgwick Ave Display", "Permanent Marker", "Marker Felt", Impact, sans-serif;
+      --font-body: "Archivo", "Segoe UI", Arial, sans-serif;
+
+      --header-h: 4.75rem;
+      --tree-gap: 34px;       /* alto de las líneas del organigrama */
+      --disc: 150px;          /* tamaño de cada disco de vinilo */
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-padding-top: var(--header-h); }
+    body {
+      margin: 0;
+      background: var(--wall);
+      color: var(--paper);
+      font-family: var(--font-body);
+      font-size: 1.05rem;
+      line-height: 1.6;
+    }
+    /* Grano de pared de cemento sobre toda la página */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      pointer-events: none;
+      opacity: 0.09;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    }
+    img { display: block; max-width: 100%; }
+    h1, h2, h3, p { margin: 0; }
+
+    :focus-visible {
+      outline: 3px solid var(--cyan);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
+
+    .container {
+      width: min(1080px, 100% - 2.5rem);
+      margin-inline: auto;
+    }
+
+    /* ==========================================================
+       CABECERA (con cinta de precaución)
+       ========================================================== */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(20, 13, 40, 0.96);
+    }
+    .site-header::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -8px;
+      height: 8px;
+      background: repeating-linear-gradient(-45deg, var(--yellow) 0 12px, var(--ink) 12px 24px);
+    }
+    .header-inner {
+      min-height: var(--header-h);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem 1.5rem;
+      padding-block: 0.5rem;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      color: var(--paper);
+      text-decoration: none;
+      font-family: var(--font-body);
+      font-weight: 800;
+      font-size: 1.6rem;
+      line-height: 1;
+    }
+    /* Hueco para el logo de LÁJAR ASOCIADOS (aún sin hacer).
+       Cuando lo tengas: sustituye el <span class="logo-slot"> por
+       <img src="logo-lajar.png" alt="Logo de LÁJAR ASOCIADOS" height="46"> */
+    .logo-slot {
+      width: 46px;
+      height: 46px;
+      border: 2px dashed var(--paper-dim);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-family: var(--font-body);
+      font-size: 0.7rem;
+      color: var(--paper-dim);
+      flex: none;
+    }
+    .site-nav { display: flex; gap: 0.5rem; }
+    .site-nav a {
+      color: var(--paper);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 0.35rem 0.85rem;
+      border-radius: 3px;
+      transition: background-color 0.2s, color 0.2s;
+    }
+    .site-nav a:hover { background: rgba(244, 238, 226, 0.14); }
+    .site-nav a.is-active {
+      background: var(--pink);
+      color: var(--ink);
+      transform: rotate(-2deg);
+    }
+    
+    /* Botón de menú hamburguesa (☰) */
+    .nav-toggle {
+      display: none;
+      width: 46px;
+      height: 46px;
+      padding: 0;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      background: transparent;
+      border: 2px solid var(--paper);
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    .nav-toggle:hover { background: rgba(244, 238, 226, 0.14); }
+    .nav-toggle .bar {
+      display: block;
+      width: 22px;
+      height: 3px;
+      background: var(--paper);
+      border-radius: 2px;
+      transition: transform 0.2s, opacity 0.2s;
+    }
+    /* Al abrir, las tres rayas se convierten en una X */
+    .nav-toggle[aria-expanded="true"] .bar:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+    .nav-toggle[aria-expanded="true"] .bar:nth-child(2) { opacity: 0; }
+    .nav-toggle[aria-expanded="true"] .bar:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
+    
+
+    /* ==========================================================
+       SECCIONES (base)
+       ========================================================== */
+    .section {
+      padding-block: clamp(3.5rem, 8vw, 6.5rem);
+      scroll-margin-top: var(--header-h);
+    }
+    .section--alt { background: var(--wall-2); }
+
+    /* Títulos tipo tag de graffiti, con goteo de pintura */
+    .section-title {
+      position: relative;
+      display: inline-block;
+      font-family: var(--font-tag);
+      font-weight: 400;
+      font-size: clamp(2.8rem, 9vw, 5.75rem);
+      line-height: 1;
+      color: var(--paper);
+      text-shadow: 4px 4px 0 var(--pink);
+      transform: rotate(-1.5deg);
+    }
+    .section-title::after {
+      content: "";
+      position: absolute;
+      left: 0.12em;
+      top: calc(100% - 0.28em);
+      width: 1.9em;
+      height: 0.95em;
+      background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 50'><g fill='%23F4EEE2'><rect x='6' y='0' width='7' height='26' rx='3.5'/><circle cx='9.5' cy='31' r='5'/><rect x='30' y='0' width='6' height='14' rx='3'/><circle cx='33' cy='18' r='4'/><rect x='58' y='0' width='8' height='38' rx='4'/><circle cx='62' cy='44' r='5.5'/><rect x='84' y='0' width='6' height='18' rx='3'/><circle cx='87' cy='23' r='4'/></g></svg>") no-repeat left top / contain;
+    }
+
+    /* ==========================================================
+       1. CONÓCENOS
+       ========================================================== */
+    .about-text {
+      display: grid;
+      gap: 1.1rem;
+      max-width: 60ch;
+      margin-top: clamp(3.5rem, 7vw, 5.5rem);   /* deja sitio a las gotas del título */
+      font-size: 1.15rem;
+    }
+
+    /* Organigrama */
+    .org { margin-top: clamp(4rem, 7vw, 6rem); }
+
+    .org-top {
+      display: flex;
+      justify-content: center;
+      position: relative;
+      padding-bottom: var(--tree-gap);
+    }
+    .org-top::after {           /* línea vertical del CEO hacia abajo */
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: 0;
+      height: var(--tree-gap);
+      border-left: 3px dashed var(--paper-dim);
+    }
+    .org-row {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+    }
+    .org-row .member {
+      position: relative;
+      padding: var(--tree-gap) 0.6rem 0;
+    }
+    /* Líneas que unen cada persona con la barra horizontal */
+    .org-row .member::before,
+    .org-row .member::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      width: 50%;
+      height: var(--tree-gap);
+      border-top: 3px dashed var(--paper-dim);
+    }
+    .org-row .member::before { right: 50%; }
+    .org-row .member::after  { left: 50%; border-left: 3px dashed var(--paper-dim); }
+    .org-row .member:first-child::before { border-top: none; }
+    .org-row .member:last-child::after   { border-top: none; }
+
+    .member { text-align: center; }
+
+    /* Puesto: pegatina con la sigla */
+    .role { display: grid; justify-items: center; gap: 0.5rem; margin-bottom: 1.1rem; }
+    .role-acr {
+      display: inline-block;
+      padding: 0.2em 0.55em 0.1em;
+      background: var(--chip, var(--yellow));
+      color: var(--ink);
+      font-family: var(--font-tag);
+      font-weight: 400;
+      font-size: 1.8rem;
+      line-height: 1;
+      border-radius: 4px;
+      transform: rotate(var(--tilt, -2deg));
+      box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.4);
+    }
+    .role-desc {
+      font-weight: 500;
+      font-size: 0.9rem;
+      color: var(--paper-dim);
+    }
+
+    /* Foto circular dentro de un disco de vinilo */
+    .vinyl {
+      position: relative;
+      width: var(--disc);
+      height: var(--disc);
+      margin-inline: auto;
+      border-radius: 50%;
+      background:
+        conic-gradient(from 30deg,
+          rgba(255, 255, 255, 0) 0deg, rgba(255, 255, 255, 0.24) 25deg, rgba(255, 255, 255, 0) 60deg,
+          rgba(255, 255, 255, 0) 180deg, rgba(255, 255, 255, 0.18) 205deg, rgba(255, 255, 255, 0) 240deg),
+        repeating-radial-gradient(circle at center, #0b0715 0 2px, #1d1433 2px 4px);
+      box-shadow: 0 0 0 3px var(--ink), 6px 8px 0 rgba(0, 0, 0, 0.4);
+    }
+    .avatar {
+      position: absolute;
+      inset: 0;
+      margin: auto;
+      width: 62%;
+      height: 62%;
+      border-radius: 50%;
+      object-fit: cover;
+      background: var(--wall-2);
+      border: 4px solid var(--chip, var(--yellow));
+    }
+    .vinyl:hover { animation: spin 3s linear infinite; }
+
+    .name {
+      margin-top: 1.1rem;
+      font-weight: 800;
+      font-size: 1.05rem;
+      line-height: 1.25;
+    }
+    .note {
+      margin: 0.25rem auto 0;
+      max-width: 22ch;
+      font-size: 0.92rem;
+      line-height: 1.45;
+      color: var(--paper-dim);
+    }
+    .note:empty { display: none; }
+
+    /* Foto grupal: pegada con cinta en la pared */
+    .group-photo {
+      position: relative;
+      margin: clamp(4rem, 7vw, 6rem) auto 0;
+      padding: 12px 12px 0;
+      background: var(--paper);
+      color: var(--ink);
+      transform: rotate(-1deg);
+      box-shadow: 10px 12px 0 rgba(0, 0, 0, 0.4);
+    }
+    .group-photo::before,
+    .group-photo::after {
+      content: "";
+      position: absolute;
+      z-index: 1;
+      top: -15px;
+      width: 110px;
+      height: 32px;
+      background: rgba(255, 210, 63, 0.85);
+    }
+    .group-photo::before { left: 7%;  transform: rotate(-6deg); }
+    .group-photo::after  { right: 7%; transform: rotate(5deg); background: rgba(53, 224, 208, 0.85); }
+    .group-photo img {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 16 / 7;
+      object-fit: cover;
+    }
+    .group-photo figcaption {
+      padding: 0.55rem 0.5rem 0.7rem;
+      font-family: var(--font-tag);
+      font-size: 1.6rem;
+      line-height: 1.1;
+    }
+
+    /* ==========================================================
+       2. NUESTRO PROYECTO
+       ========================================================== */
+    /* Cartel pegado en la pared */
+    .project {
+      margin-top: clamp(4.5rem, 9vw, 7rem);
+      display: grid;
+      grid-template-columns: minmax(180px, 300px) minmax(0, 1fr);
+      gap: 2rem clamp(1.5rem, 4vw, 3.5rem);
+      align-items: center;
+      padding: clamp(1.25rem, 3vw, 2.25rem);
+      background: var(--paper);
+      color: var(--ink);
+      border: 4px solid var(--ink);
+      border-radius: 4px;
+      box-shadow: 10px 10px 0 var(--pink);
+      transform: rotate(-0.6deg);
+    }
+    .project-logo {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1;
+      object-fit: cover;
+      background: var(--paper-dim);
+      border: 4px solid var(--ink);
+      box-shadow: 7px 7px 0 var(--cyan);
+      transform: rotate(2deg);
+    }
+    .project-body { display: grid; gap: 1.1rem; max-width: 60ch; }
+    .project-name {
+      font-family: var(--font-tag);
+      font-weight: 400;
+      font-size: clamp(3.4rem, 9vw, 6rem);
+      line-height: 0.95;
+      color: var(--ink);
+      text-shadow: 4px 4px 0 var(--pink);
+    }
+    .project-quote {
+      font-weight: 800;
+      font-size: 1.25rem;
+      line-height: 1.6;
+    }
+    /* Subrayado de rotulador: va en un <span> en línea para que siga cada línea del texto */
+    .marker {
+      background: linear-gradient(transparent 52%, var(--yellow) 52% 92%, transparent 92%);
+      -webkit-box-decoration-break: clone;
+      box-decoration-break: clone;
+      padding: 0 0.2em;
+    }
+
+    /* Espacio para el diseño del lema */
+        /* Lema: las letras van directamente sobre la pared, sin recuadro */
+    .lema-slot {
+      margin-top: clamp(3rem, 6vw, 5rem);
+      text-align: center;
+    }
+    .lema-slot img {
+      margin-inline: auto;
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      max-height: 340px;
+    }
+
+    /* ==========================================================
+       PIE
+       ========================================================== */
+    .site-footer {
+      padding-block: 2rem;
+      font-size: 0.95rem;
+      color: var(--paper-dim);
+      border-top: 3px dashed rgba(201, 192, 216, 0.4);
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ==========================================================
+       RESPONSIVE
+       ========================================================== */
+    @media (max-width: 900px) {
+      .project { grid-template-columns: 1fr; }
+      .project-logo { max-width: 260px; }
+    }
+
+    @media (max-width: 820px) {
+      /* En móvil el organigrama pasa a 2 columnas, sin líneas */
+      .org-top { padding-bottom: 2.5rem; }
+      .org-top::after { display: none; }
+      .org-row {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2.5rem 1rem;
+      }
+      .org-row .member { padding: 0; }
+      .org-row .member::before,
+      .org-row .member::after { display: none; }
+      .org-row .member:last-child:nth-child(odd) {
+        grid-column: 1 / -1;
+        justify-self: center;
+        max-width: 50%;
+      }
+    }
+        /* Menú hamburguesa: los enlaces viven SIEMPRE en un desplegable
+       (portátil, tableta y móvil). Solo se activa si hay JavaScript. */
+    .js .header-inner { flex-wrap: nowrap; }
+    .js .nav-toggle { display: flex; }
+    .js .site-nav {
+      display: none;
+      position: absolute;
+      top: 100%;
+      right: max(1.25rem, calc((100% - 1080px) / 2));   /* alineado con el botón */
+      width: min(280px, 100% - 2.5rem);
+      margin-top: 16px;                                  /* deja libre la cinta de precaución */
+      flex-direction: column;
+      gap: 0.25rem;
+      padding: 0.75rem;
+      background: var(--ink);
+      border: 2px solid rgba(244, 238, 226, 0.25);
+      border-radius: 4px;
+      box-shadow: 6px 6px 0 var(--pink);
+    }
+    .js .site-nav.is-open { display: flex; }
+    .js .site-nav a { padding: 0.8rem 1rem; font-size: 1.15rem; }
+    .js .site-nav a.is-active { transform: none; }
+
+    @media (max-width: 700px) {
+      /* En móvil el desplegable ocupa todo el ancho */
+      .js .site-nav {
+        left: 0;
+        right: 0;
+        width: auto;
+        margin-top: 8px;
+        padding: 0.75rem 1.25rem 1.25rem;
+        border: 0;
+        border-bottom: 3px dashed rgba(201, 192, 216, 0.4);
+        border-radius: 0;
+        box-shadow: none;
+      }
+    }
+    @media (max-width: 520px) {
+      :root { --disc: 132px; }
+      .group-photo img { aspect-ratio: 4 / 3; }
+      .group-photo::before,
+      .group-photo::after { width: 80px; }
+    }
+    
+    @media (max-width: 380px) {
+      .brand { font-size: 1.3rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ============================ CABECERA ============================ -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#conocenos">
+        <!-- LOGO DE LÁJAR ASOCIADOS: pendiente (ver comentario en el CSS) -->
+        <span class="logo-slot" aria-hidden="true">Logo</span>
+        LÁJAR ASOCIADOS
+      </a>
+      <nav class="site-nav" id="menu-principal" aria-label="Principal">
+        <a href="#conocenos">Conócenos</a>
+        <a href="#proyecto">Nuestro proyecto</a>
+        <!-- <a href="#tercer-apartado">Nombre del tercer apartado</a> -->
+      </nav>
+      <!-- MENÚ HAMBURGUESA (☰): visible solo en móvil -->
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="menu-principal" aria-label="Abrir menú">
+        <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ============================ 1. CONÓCENOS ============================ -->
+    <section id="conocenos" class="section" aria-labelledby="titulo-conocenos">
+      <div class="container">
+
+        <h1 id="titulo-conocenos" class="section-title">Conócenos</h1>
+        <div class="about-text">
+            <!-- TEXTO INVENTADO: sustitúyelo por la descripción real del grupo -->
+            <p>Somos LÁJAR ASOCIADOS, un equipo de cinco estudiantes de Ingeniería de Telecomunicaciones de Málaga que se juntó con una idea clara: crear tecnología útil para la gente que mueve la cultura de su ciudad. Cada uno aporta una mirada distinta, y de esa mezcla salen proyectos que se piensan en equipo y se cuidan hasta el último detalle.</p>
+            <p>Trabajamos con cercanía y sin prisas innecesarias: escuchamos primero, probamos rápido y mejoramos con lo que aprendemos. Nuestro primer proyecto, DJHero, nace de esa forma de trabajar.</p>
+        </div>
+
+        <!-- ORGANIGRAMA
+             Para cambiar una foto: modifica el src de cada <img class="avatar">
+             (por ejemplo src="fotos/ceo.jpg"). La foto se ve dentro de un disco de vinilo.
+             Para cambiar el nombre o el texto opcional: edita los <p>.
+             Si no quieres texto opcional, deja el <p class="note"></p> vacío.
+             El color de cada pegatina se cambia en style="--chip: ..." -->
+        <div class="org" role="group" aria-label="Organigrama del equipo">
+
+          <div class="org-top">
+            <div class="member" style="--chip: var(--yellow); --tilt: -3deg;">
+              <h3 class="role"><span class="role-acr">CEO</span><span class="role-desc">Dirección general</span></h3>
+              <div class="vinyl"><img class="avatar" src="images/FotoLUCIA.png" alt="Foto del CEO (provisional)" width="93" height="93" data-fallback="avatar"></div>
+              <p class="name"> Lucía Ron </p>
+              <p class="note"></p>
+            </div>
+          </div>
+
+          <ul class="org-row">
+            <li class="member" style="--chip: var(--cyan); --tilt: 2deg;">
+              <h3 class="role"><span class="role-acr">CTO</span><span class="role-desc">Tecnología</span></h3>
+              <div class="vinyl"><img class="avatar" src="images/FotoANGELA.png" alt="Foto del CTO (provisional)" width="93" height="93" data-fallback="avatar"></div>
+              <p class="name"> Ángela Fuentes </p>
+              <p class="note"></p>
+            </li>
+            <li class="member" style="--chip: var(--pink); --tilt: -2deg;">
+              <h3 class="role"><span class="role-acr">CPO</span><span class="role-desc">Producto</span></h3>
+              <div class="vinyl"><img class="avatar" src="images/FotoJOSE.JPG" alt="Foto del CPO (provisional)" width="93" height="93" loading="lazy" data-fallback="avatar"></div>
+              <p class="name"> José Apellido </p>
+              <p class="note"> Junto a la colaboración de Ricardo Pau. </p>
+            </li>
+            <li class="member" style="--chip: var(--yellow); --tilt: 3deg;">
+              <h3 class="role"><span class="role-acr">COO</span><span class="role-desc">Operaciones</span></h3>
+              <div class="vinyl"><img class="avatar" src="images/FotoALICIA.jpeg" alt="Foto del COO (provisional)" width="93" height="93" loading="lazy" data-fallback="avatar"></div>
+              <p class="name"> Alicia Simón </p>
+              <p class="note"></p>
+            </li>
+            <li class="member" style="--chip: var(--cyan); --tilt: -1.5deg;">
+              <h3 class="role"><span class="role-acr">CFO</span><span class="role-desc">Finanzas</span></h3>
+              <div class="vinyl"><img class="avatar" src="images/FotoLUCIA.png" alt="Foto del CFO (provisional)" width="93" height="93" loading="lazy" data-fallback="avatar"></div>
+              <p class="name"> Lucía Ron </p>
+              <p class="note"> Junto a la colaboración de Alicia Simón. </p>
+            </li>
+            <li class="member" style="--chip: var(--pink); --tilt: 2.5deg;">
+              <h3 class="role"><span class="role-acr">CMO</span><span class="role-desc">Marketing</span></h3>
+              <div class="vinyl"><img class="avatar" src="images/FotoRICARDO.jpg" alt="Foto del CMO (provisional)" width="93" height="93" loading="lazy" data-fallback="avatar"></div>
+              <p class="name"> Ricardo Pau </p>
+              <p class="note"> Junto a la colaboración de José Apellido. </p>
+            </li>
+          </ul>
+        </div>
+
+        <!-- FOTO GRUPAL: cambia el src por vuestra foto real -->
+        <figure class="group-photo">
+          <img src="https://picsum.photos/seed/lajar-equipo/1400/620" alt="Foto grupal del equipo de LÁJAR ASOCIADOS (provisional)" width="1400" height="620" loading="lazy" data-fallback="photo">
+          <figcaption>El equipo de LÁJAR ASOCIADOS</figcaption>
+        </figure>
+
+      </div>
+    </section>
+
+    <!-- ============================ 2. NUESTRO PROYECTO ============================ -->
+    <section id="proyecto" class="section section--alt" aria-labelledby="titulo-proyecto">
+      <div class="container">
+
+        <h2 id="titulo-proyecto" class="section-title">Nuestro proyecto</h2>
+
+        <div class="project">
+          <!-- LOGO DE DJHERO: cambia el src por el logo real -->
+          <img class="project-logo" src="https://picsum.photos/seed/djhero-logo/600/600" alt="Logo de DJHero (provisional)" width="600" height="600" loading="lazy" data-fallback="logo">
+
+          <div class="project-body">
+            <h3 class="project-name">DJHero</h3>
+            <p>DJHero es una plataforma creada para dar visibilidad al talento de los DJs, especialmente a aquellos que están empezando y buscan una oportunidad para hacerse un hueco en la escena musical de Málaga.</p>
+            <p>Con DJHero, los DJs pueden mostrar su música, experiencia y reseñas, mientras que los promotores pueden descubrir nuevos talentos de su zona sin que el número de seguidores sea lo más importante.</p>
+            <p class="project-quote"><span class="marker">Porque todo DJ merece una oportunidad para demostrar lo que puede hacer.</span></p>
+          </div>
+        </div>
+
+        <!-- ESPACIO PARA EL DISEÑO DEL LEMA
+             Sustituye TODO el contenido de este bloque por:
+             <img src="lema.png" alt="Nuestro lema"> -->
+        <div class="lema-slot">
+            <img src="images/lema.png" alt="Sin Boca a Boca y Pincho por Qué me Toca">
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================ 3. TERCER APARTADO (opcional) ============================
+         Quita los símbolos de comentario y rellénalo cuando lo tengáis claro.
+         Recuerda activar también su enlace en el menú de la cabecera.
+
+    <section id="tercer-apartado" class="section" aria-labelledby="titulo-tercero">
+      <div class="container">
+        <h2 id="titulo-tercero" class="section-title">Título</h2>
+        <p>Contenido…</p>
+      </div>
+    </section>
+    -->
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">© <span id="year">2026</span> LÁJAR ASOCIADOS</div>
+  </footer>
+
+  <script>
+    (function () {
+      "use strict";
+
+      var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      /* 1. Si una imagen no carga, se muestra un marcador en su lugar */
+      function placeholder(kind) {
+        var svg;
+        if (kind === "avatar") {
+          svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">' +
+                '<rect width="200" height="200" fill="#3B2A7A"/>' +
+                '<circle cx="100" cy="78" r="36" fill="#C9C0D8"/>' +
+                '<path d="M28 200c0-42 32-68 72-68s72 26 72 68z" fill="#C9C0D8"/></svg>';
+        } else {
+          svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">' +
+                '<rect width="400" height="300" fill="#3B2A7A"/>' +
+                '<text x="200" y="158" font-family="sans-serif" font-size="22" ' +
+                'fill="#F4EEE2" text-anchor="middle">Imagen provisional</text></svg>';
+        }
+        return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
+      }
+      document.querySelectorAll("img[data-fallback]").forEach(function (img) {
+        function usePlaceholder() {
+          img.removeEventListener("error", usePlaceholder);
+          img.src = placeholder(img.getAttribute("data-fallback"));
+        }
+        img.addEventListener("error", usePlaceholder);
+        /* Por si el fallo ocurrió antes de que se cargara este script */
+        if (img.complete && img.naturalWidth === 0) usePlaceholder();
+      });
+
+      /* 2. Desplazamiento suave al pulsar los enlaces del menú */
+      document.querySelectorAll('a[href^="#"]').forEach(function (link) {
+        link.addEventListener("click", function (e) {
+          var target = document.querySelector(link.getAttribute("href"));
+          if (!target) return;
+          e.preventDefault();
+          target.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+          history.replaceState(null, "", link.getAttribute("href"));
+        });
+      });
+
+      /* 3. Marca en el menú el apartado que se está viendo */
+      var navLinks = document.querySelectorAll(".site-nav a");
+      if ("IntersectionObserver" in window) {
+        var observer = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            navLinks.forEach(function (a) {
+              a.classList.toggle("is-active", a.getAttribute("href") === "#" + entry.target.id);
+            });
+          });
+        }, { rootMargin: "-40% 0px -55% 0px" });
+        document.querySelectorAll("main section[id]").forEach(function (s) { observer.observe(s); });
+      }
+
+      /* 4. Menú hamburguesa: abrir y cerrar */
+      var toggle = document.querySelector(".nav-toggle");
+      var menu = document.getElementById("menu-principal");
+      function setMenu(open) {
+        menu.classList.toggle("is-open", open);
+        toggle.setAttribute("aria-expanded", String(open));
+        toggle.setAttribute("aria-label", open ? "Cerrar menú" : "Abrir menú");
+      }
+      if (toggle && menu) {
+        toggle.addEventListener("click", function () {
+          setMenu(toggle.getAttribute("aria-expanded") !== "true");
+        });
+        /* Se cierra al elegir un apartado */
+        menu.querySelectorAll("a").forEach(function (a) {
+          a.addEventListener("click", function () { setMenu(false); });
+        });
+        /* Se cierra con Escape */
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape" && menu.classList.contains("is-open")) {
+            setMenu(false);
+            toggle.focus();
+          }
+        });
+        /* Se cierra al pulsar fuera del menú */
+        document.addEventListener("click", function (e) {
+          if (!menu.classList.contains("is-open")) return;
+          if (!menu.contains(e.target) && !toggle.contains(e.target)) setMenu(false);
+        });
+      }
+
+      
+      /* 5. Año actual en el pie de página */
+      var year = document.getElementById("year");
+      if (year) year.textContent = new Date().getFullYear();
+    })();
+  </script>
+</body>
+</html>
