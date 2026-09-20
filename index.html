@@ -359,13 +359,17 @@
       text-shadow: 4px 4px 0 var(--pink);
     }
     .project-quote {
-      justify-self: start;
       font-weight: 800;
       font-size: 1.25rem;
-      line-height: 1.4;
-      background: linear-gradient(transparent 52%, var(--yellow) 52% 92%, transparent 92%);
+      line-height: 1.6;
     }
-
+    /* Subrayado de rotulador: va en un <span> en línea para que siga cada línea del texto */
+    .marker {
+      background: linear-gradient(transparent 52%, var(--yellow) 52% 92%, transparent 92%);
+      -webkit-box-decoration-break: clone;
+      box-decoration-break: clone;
+      padding: 0 0.2em;
+    }
     /* Espacio para el diseño del lema */
     .lema-slot {
       margin-top: clamp(3rem, 5vw, 4.5rem);
@@ -556,7 +560,7 @@
             <h3 class="project-name">DJHero</h3>
             <p>DJHero es una plataforma creada para dar visibilidad al talento de los DJs, especialmente a aquellos que están empezando y buscan una oportunidad para hacerse un hueco en la escena musical de Málaga.</p>
             <p>Con DJHero, los DJs pueden mostrar su música, experiencia y reseñas, mientras que los promotores pueden descubrir nuevos talentos de su zona sin que el número de seguidores sea lo más importante.</p>
-            <p class="project-quote">Porque todo DJ merece una oportunidad para demostrar lo que puede hacer.</p>
+            <p class="project-quote"><span class="marker">Porque todo DJ merece una oportunidad para demostrar lo que puede hacer.</span></p>
           </div>
         </div>
 
