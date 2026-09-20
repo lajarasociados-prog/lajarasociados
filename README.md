@@ -1,6 +1,6 @@
 #  LÁJAR ASOCIADOS 
 
-Es la web de **LÁJAR ASOCIADOS**, un equipo de Málaga con mucho que decir y todavía pocas fotos reales. Por eso, de momento, todo el mundo sale como gente random de internet.
+Es la web de **LÁJAR ASOCIADOS**, un equipo de Málaga con mucho que decir.
 
 ## Sobre DJHero
 
@@ -8,4 +8,4 @@ DJHero es una plataforma creada para dar visibilidad al talento de los DJs, espe
 
 **Porque todo DJ merece una oportunidad para demostrar lo que puede hacer.**
 
-<p align="center">Hecho en Málaga con mucho ritmo y cero frameworks. </p>
+<p align="center">Hecho en Málaga con mucho ritmo. </p>
