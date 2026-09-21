@@ -209,7 +209,15 @@
       margin-top: clamp(3.5rem, 7vw, 5.5rem);   /* deja sitio a las gotas del título */
       font-size: 1.15rem;
     }
-
+    .about {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(200px, 320px);
+      gap: 2rem 4rem;
+      align-items: center;
+    }
+    /* El marco del logo va recto (el del proyecto DJEcho sí va torcido) */
+    .project-logo.about-logo { transform: none; }
+    
     /* Organigrama */
     .org { margin-top: clamp(4rem, 7vw, 6rem); }
 
@@ -433,6 +441,8 @@
        RESPONSIVE
        ========================================================== */
     @media (max-width: 900px) {
+      .about { grid-template-columns: 1fr; }
+      .about-logo { justify-self: center; }
       .project { grid-template-columns: 1fr; }
       .project-logo { max-width: 260px; }
     }
@@ -535,13 +545,19 @@
     <!-- ============================ 1. CONÓCENOS ============================ -->
     <section id="conocenos" class="section" aria-labelledby="titulo-conocenos">
       <div class="container">
-
+        <div class="about">
+          <div class="about-main">
         <h1 id="titulo-conocenos" class="section-title">Conócenos</h1>
         <div class="about-text">
             <!-- TEXTO INVENTADO: sustitúyelo por la descripción real del grupo -->
             <p>Somos LÁJAR ASOCIADOS, un equipo de cinco estudiantes de Ingeniería de Telecomunicaciones de Málaga que se juntó con una idea clara: crear tecnología útil para la gente que mueve la cultura de su ciudad. Cada uno aporta una mirada distinta, y de esa mezcla salen proyectos que se piensan en equipo y se cuidan hasta el último detalle.</p>
             <p>Trabajamos con cercanía y sin prisas innecesarias: escuchamos primero, probamos rápido y mejoramos con lo que aprendemos. Nuestro primer proyecto, DJEcho, nace de esa forma de trabajar.</p>
         </div>
+        </div>
+          <!-- LOGO EN MARCO: cambia el src por tu logo -->
+          <img class="project-logo about-logo" src="images/logo-lajar.png" alt="Logo de LÁJAR ASOCIADOS" width="600" height="600" data-fallback="logo">
+        </div>
+      
 
         <!-- ORGANIGRAMA
              Para cambiar una foto: modifica el src de cada <img class="avatar">
@@ -611,7 +627,7 @@
 
         <div class="project">
           <!-- LOGO DE DJEcho: cambia el src por el logo real -->
-          <img class="project-logo" src="https://picsum.photos/seed/djhero-logo/600/600" alt="Logo de DJEcho (provisional)" width="600" height="600" loading="lazy" data-fallback="logo">
+          <img class="project-logo" src="https://picsum.photos/seed/DJEcho-logo/600/600" alt="Logo de DJEcho (provisional)" width="600" height="600" loading="lazy" data-fallback="logo">
 
           <div class="project-body">
             <h3 class="project-name">DJEcho</h3>
